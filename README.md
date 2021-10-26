@@ -69,22 +69,63 @@ time platanus gap_close -o Poil -c Poil_scaffold.fa -IP1 sub1.fastq.trimmed sub2
 ## Jupiter Notebook
 еще не рабочая ![ссылка]()
 
-#### 1. 
+#### 1. Импорт библиотек
 ```bash
-
+import re
 ```
 
-#### 2. 
-```bash
-
+#### 2. Функция для получения данных
+```bashdef Get_Info(file):
+    c = 0
+    length = 0
+    lines = []
+    for line in file.readlines():
+        if line[0] == '>':
+            c += 1
+            id_len = line.find('len')+3
+            length += int(line[id_len : line.find('_', id_len)])
+            lines.append(int(line[id_len : line.find('_', id_len)]))
+    lines.sort(reverse = True)
+    n50 = 0
+    for i in lines:
+        n50 += i
+        if (n50 >= (length/2)):
+            n50 = i
+            break
+    info = [c, length, lines[0], n50]
+    return info
 ```
 
-#### 3. 
+#### 3. Контиги
 ```bash
-
+contig = open('Poil_contig.fa', 'r')
+info = Get_Info(contig)
+print(f'Общее количество контигов: {info[0]} \n\
+Общая длина контигов: {info[1]} \n\
+Длина самого длинного контига: {info[2]} \n\
+N50: {info[3]}')
 ```
+Общее количество контигов: 614 
+Общая длина контигов: 3925550 
+Длина самого длинного контига: 179307 
+N50: 55043
 
-#### 4. 
+
+#### 4. Скаффолды
+```bash
+scaffold = open('Poil_scaffold.fa', 'r')
+info = Get_Info(scaffold)
+print(f'Общее количество скаффолдов: {info[0]} \n\
+Общая длина скаффолдов: {info[1]} \n\
+Длина самого длинного скаффолда: {info[2]} \n\
+N50: {info[3]}')
+```
+Общее количество скаффолдов: 73 
+Общая длина скаффолдов: 3875965 
+Длина самого длинного скаффолда: 3831671 
+N50: 3831671
+
+#### 5.
 ```bash
 
 ```
