@@ -60,11 +60,11 @@ time platanus gap_close -o Poil -c Poil_scaffold.fa -IP1 sub1.fastq.trimmed sub2
 ## Отчёты multiQC
 #### Для исходных чтений
 ![](https://github.com/Vladm0z/hse21_hw1/blob/main/images/General_Statistics_1.png)
-![](https://github.com/Vladm0z/hse21_hw1/blob/main/images/Adapter_Content_1.png)
+![](https://github.com/Vladm0z/hse21_hw1/blob/main/images/Per_Sequence_Quality_Scores_1.png)
 
 #### Для подрезанных чтений
 ![](https://github.com/Vladm0z/hse21_hw1/blob/main/images/General_Statistics_2.png)
-![](https://github.com/Vladm0z/hse21_hw1/blob/main/images/Adapter_Content_2.png)
+![](https://github.com/Vladm0z/hse21_hw1/blob/main/images/Per_Sequence_Quality_Scores_2.png)
 
 ## Jupiter Notebook
 еще не рабочая ![ссылка]()
