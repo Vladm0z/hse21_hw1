@@ -67,7 +67,7 @@ time platanus gap_close -o Poil -c Poil_scaffold.fa -IP1 sub1.fastq.trimmed sub2
 ![](https://github.com/Vladm0z/hse21_hw1/blob/main/images/Per_Sequence_Quality_Scores_2.png)
 
 ## Jupiter Notebook
-еще не рабочая ![ссылка]()
+![ссылка](https://github.com/Vladm0z/hse21_hw1/blob/main/source/hse21_hw1.ipynb)
 
 #### 1. Импорт библиотек
 ```bash
