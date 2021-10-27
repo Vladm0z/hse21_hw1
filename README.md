@@ -75,58 +75,93 @@ import re
 ```
 
 #### 2. Функция для получения данных
-```bashdef Get_Info(file):
-    c = 0
+```bash
+def get_info(f, text, output = True):
+    lengths = []
+    total_len = 0
+    num = 0
+    max_len = 0
     length = 0
-    lines = []
-    for line in file.readlines():
-        if line[0] == '>':
-            c += 1
-            id_len = line.find('len')+3
-            length += int(line[id_len : line.find('_', id_len)])
-            lines.append(int(line[id_len : line.find('_', id_len)]))
-    lines.sort(reverse = True)
-    n50 = 0
-    for i in lines:
-        n50 += i
-        if (n50 >= (length/2)):
-            n50 = i
+    score = 0
+    max_sequence = ''
+    curr_sequence = ''
+    for line in f:
+        if (line[0] == '>'):
+            if num != 0:
+                lengths.append(length)
+            num += 1
+            if length >= max_len:
+                max_len = length
+                max_sequence = curr_sequence
+            curr_sequence = ''
+            length = 0
+        else:
+            curr_sequence += line.strip()
+            length += len(line.strip())
+            total_len += len(line.strip())
+     
+    lengths.sort(reverse = True) 
+    for i in lengths:
+        score += i
+        if score >= total_len / 2:
+            if output == True:
+                print(f'Анализ {text}\n\
+Общее количество: {num},\n\
+Общая длина: {total_len},\n\
+Длина самого длинного: {max_len},\n\
+N50: {i}\n')
             break
-    info = [c, length, lines[0], n50]
-    return info
+    return max_sequence
 ```
 
 #### 3. Контиги
 ```bash
-contig = open('Poil_contig.fa', 'r')
-info = Get_Info(contig)
-print(f'Общее количество контигов: {info[0]} \n\
-Общая длина контигов: {info[1]} \n\
-Длина самого длинного контига: {info[2]} \n\
-N50: {info[3]}')
+max_cont = get_info(open('Poil_contig.fa', 'r'), 'Контигов')
 ```
-Общее количество контигов: 614<br />
-Общая длина контигов: 3925550<br />
-Длина самого длинного контига: 179307<br />
-N50: 55043<br />
-<br />
+`
+Анализ Контигов
+Общее количество: 614,
+Общая длина: 3925550,
+Длина самого длинного: 179307,
+N50: 55043
+`
 
 #### 4. Скаффолды
 ```bash
-scaffold = open('Poil_scaffold.fa', 'r')
-info = Get_Info(scaffold)
-print(f'Общее количество скаффолдов: {info[0]} \n\
-Общая длина скаффолдов: {info[1]} \n\
-Длина самого длинного скаффолда: {info[2]} \n\
-N50: {info[3]}')
+max_scaf = get_info(open('Poil_scaffold.fa', 'r'), 'Скаффолдов')
 ```
-Общее количество скаффолдов: 73<br />
-Общая длина скаффолдов: 3875965<br />
-Длина самого длинного скаффолда: 3831671<br />
-N50: 3831671<br />
-<br />
+`
+Анализ Скаффолдов
+Общее количество: 73,
+Общая длина: 3876007,
+Длина самого длинного: 3831713,
+N50: 3831713
+`
 
-#### 5.
+#### 5. Подсчет гэпов для необрезанных чтений
 ```bash
-
+print(f'Общая длина гэпов: {max_scaf.count("N")}')
+max_scaf = re.sub(r'N{2,}', 'N', max_scaf)
+print(f'Число гэпов: {max_scaf.count("N")}')
 ```
+`
+Общая длина гэпов: 6135
+Число гэпов: 63
+`
+
+#### 6.
+```bash
+max_scaf = get_info(open('Poil_gapClosed.fa', 'r'), 'Скаффолдов', False)
+```
+
+
+#### 7. Подсчет гэпов для обрезанных чтений
+```bash
+print(f'Общая длина гэпов для обрезанных чтений: {max_scaf.count("N")}')
+max_scaf = re.sub(r'N{2,}', 'N', max_scaf)
+print(f'Число гэпов для обрезанных чтений: {max_scaf.count("N")}')
+```
+`
+Общая длина гэпов: 1284
+Число гэпов: 7
+`
